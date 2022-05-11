@@ -1,5 +1,3 @@
-import sbt._
-
 name := "edi2rho"
 
 version := "0.1"

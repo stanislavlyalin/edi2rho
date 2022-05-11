@@ -19,7 +19,7 @@ object NodeAPI {
       client = DeployServiceGrpc.stub(channel)
       // TODO: You should not use a raw protobuf message. Deploy should be signed.
       request = DeployDataProto(term = "Nil")
-      reply = client.deploy(request)
+      reply = client.doDeploy(request)
     } yield reply.onComplete { answer =>
       println(answer.map(_ => "Deploy completed successfully").getOrElse("Deploy execution error"))
     }

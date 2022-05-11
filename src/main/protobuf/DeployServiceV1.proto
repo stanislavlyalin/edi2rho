@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+service DeployService {
+  // Queue deployment of Rholang code (or fail to parse).
+  rpc deploy(DeployDataProto) returns (DeployResponse) {}
+}
+
+message DeployDataProto {
+  bytes  deployer              = 1;   // public key
+  string term                  = 2;   // rholang source code to deploy (will be parsed into `Par`)
+  int64  timestamp             = 3;   // millisecond timestamp
+  bytes  sig                   = 4;   // signature of (hash(term) + timestamp) using private key
+  string sigAlgorithm          = 5;   // name of the algorithm used to sign
+  int64  phloPrice             = 7;   // phlo price
+  int64  phloLimit             = 8;   // phlo limit for the deployment
+  int64  validAfterBlockNumber = 10;
+  string shardId               = 11;  // shard ID to prevent replay of deploys between shards
+}
+
+message DeployResponse {
+  oneof message {
+    ServiceError error = 1;
+    string result      = 2;
+  }
+}
+
+message ServiceError {
+  repeated string messages = 1;
+}
